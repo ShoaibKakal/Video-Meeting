@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "903010285106",
+    "firebase_url": "https://video-meeting-dbf27.firebaseio.com",
+    "project_id": "video-meeting-dbf27",
+    "storage_bucket": "video-meeting-dbf27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903010285106:android:1619d6b4f20ae3329b6e2b",
+        "android_client_info": {
+          "package_name": "com.shoaib.videomeeting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "903010285106-ovjres11hmgsstka51u8gct5po1h0po4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwrlG6sTJj0HPoqnV8PdNcy979K34N03Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "903010285106-ovjres11hmgsstka51u8gct5po1h0po4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -108,8 +108,8 @@ public class IncomingInvitationActivity extends AppCompatActivity {
                             if (type.equals(Constants.REMOTE_MSG_INVITATION_ACCEPTED)){
 //                                Toast.makeText(IncomingInvitationActivity.this, "Invitation Accepted", Toast.LENGTH_SHORT).show();
                                 try {
-                                    URL serverURL = new URL("https://meet.jit.si/roomname#userInfo.displayName="+Constants.KEY_FIRST_NAME);
-
+//                                    URL serverURL = new URL("https://meet.jit.si/roomname#userInfo.displayName="+Constants.KEY_FIRST_NAME);
+                                    URL serverURL = new URL("https://meet.jit.si");
                                     JitsiMeetConferenceOptions.Builder builder = new JitsiMeetConferenceOptions.Builder();
                                     builder.setServerURL(serverURL);
                                     builder.setRoom(getIntent().getStringExtra(Constants.REMOTE_MSG_MEETING_ROOM));

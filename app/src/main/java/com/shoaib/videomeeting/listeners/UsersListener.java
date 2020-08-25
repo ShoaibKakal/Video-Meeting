@@ -9,4 +9,7 @@ public interface UsersListener {
 
     //To start audio meeting
     void initiateAudioMeeting(User user);
+
+    //To start Multiple User Action
+    void onMultipleUsersAction(Boolean isMultipleUserAction);
 }

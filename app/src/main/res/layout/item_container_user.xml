@@ -25,6 +25,16 @@
         app:layout_constraintBottom_toTopOf="@id/viewDivider"/>
 
     <ImageView
+        android:id="@+id/imageUserOnlineIndicator"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:background="@drawable/user_online_indicator"
+        app:layout_constraintEnd_toEndOf="@id/textFirstChar"
+        app:layout_constraintTop_toTopOf="@id/textFirstChar"
+        android:contentDescription="@string/app_name"
+        android:visibility="gone"
+        />
+    <ImageView
         android:id="@+id/imageSelected"
         android:layout_width="0dp"
         android:layout_height="0dp"

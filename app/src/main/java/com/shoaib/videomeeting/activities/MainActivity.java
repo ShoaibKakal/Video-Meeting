@@ -41,6 +41,7 @@ import com.shoaib.videomeeting.utilities.PreferenceManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements UsersListener {
 
@@ -72,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements UsersListener {
         preferenceManager = new PreferenceManager(getApplicationContext());
 
         textTitle.setText(String.format("%s %s", preferenceManager.getString(Constants.KEY_FIRST_NAME), preferenceManager.getString(Constants.KEY_LAST_NAME)));
-
 
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,10 +115,14 @@ public class MainActivity extends AppCompatActivity implements UsersListener {
     @Override
     protected void onStart() {
         super.onStart();
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        DocumentReference documentReference = db.collection(Constants.KEY_COLLECTION_USERS).document(preferenceManager.getString(Constants.KEY_USER_ID));
-        documentReference.update(Constants.KEY_IS_ONLINE, Constants.KEY_ONLINE);
+        Map<String, Object> data = new HashMap<>();
+        data.put(Constants.KEY_IS_ONLINE, true);
+        db.collection(Constants.KEY_COLLECTION_USERS).document(preferenceManager.getString(Constants.KEY_USER_ID))
+                .update(data);
+
     }
 
     private void getUsers(){
@@ -130,7 +134,6 @@ public class MainActivity extends AppCompatActivity implements UsersListener {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                         swipeRefreshLayout.setRefreshing(false);
-
                         String myUserId = preferenceManager.getString(Constants.KEY_USER_ID);
                         if (task.isSuccessful() && task.getResult() != null){
                             users.clear();
@@ -188,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements UsersListener {
 
         HashMap<String, Object> updates = new HashMap<>();
         updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
+        updates.put(Constants.KEY_IS_ONLINE, false);
         documentReference.update(updates)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

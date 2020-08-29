@@ -95,6 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
         user.put(Constants.KEY_LAST_NAME, inputLastName.getText().toString().trim());
         user.put(Constants.KEY_EMAIL, inputEmail.getText().toString().trim());
         user.put(Constants.KEY_PASSWORD, inputPassword.getText().toString().trim());
+        user.put(Constants.KEY_IS_ONLINE, true);
 
         db.collection(Constants.KEY_COLLECTION_USERS)
                 .add(user)

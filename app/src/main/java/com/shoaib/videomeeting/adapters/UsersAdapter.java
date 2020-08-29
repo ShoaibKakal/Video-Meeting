@@ -55,7 +55,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         private TextView textFirstChar, textUsername, textEmail;
         private ImageView imageVideoMeeting, imageAudioMeeting;
         private ConstraintLayout userContainer;
-        private ImageView imageSelected;
+        private ImageView imageSelected, imageOnlineIndicator;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +66,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             imageVideoMeeting = itemView.findViewById(R.id.imageVideoMeeting);
             userContainer = itemView.findViewById(R.id.userContainer);
             imageSelected = itemView.findViewById(R.id.imageSelected);
+            imageOnlineIndicator = itemView.findViewById(R.id.imageUserOnlineIndicator);
 
         }
 
@@ -73,6 +74,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             textFirstChar.setText(user.firstName.substring(0,1));
             textEmail.setText(user.email);
             textUsername.setText(String.format("%s %s",user.firstName, user.lastName));
+            if (user.token != null){
+                imageOnlineIndicator.setVisibility(View.VISIBLE);
+            }
+            else{
+                imageOnlineIndicator.setVisibility(View.GONE);
+            }
 
             imageVideoMeeting.setOnClickListener(v -> usersListener.initiateVideoMeeting(user));
 

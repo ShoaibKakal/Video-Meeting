@@ -13,8 +13,6 @@ public class Constants {
     public static final String KEY_PREFERENCE_NAME = "videoMeetingPreference";
     public static final String KEY_IS_SIGNED_IN = "isSignedIn";
     public static final String KEY_IS_ONLINE = "isOnline";
-    public static final String KEY_ONLINE = "online";
-    public static final String KEY_OFFLINE = "offline";
     public static final String REMOTE_MSG_TYPE = "type";
     public static final String REMOTE_MSG_INVITATION = "invitation";
     public static final String REMOTE_MSG_MEETING_TYPE = "meetingType";

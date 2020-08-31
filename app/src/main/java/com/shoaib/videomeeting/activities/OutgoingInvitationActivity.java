@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,7 +58,7 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
 
     private int rejectionCount = 0;
     private int totalReceivers = 0;
-
+    MediaPlayer  mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +71,15 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
 
         preferenceManager = new PreferenceManager(getApplicationContext());
 
+        mediaPlayer = MediaPlayer.create(this,R.raw.phone_calling);
+        mediaPlayer.start();
 
-
+//        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mp) {
+//                mediaPlayer.setLooping(true);
+//            }
+//        });
 
         meetingType = getIntent().getStringExtra("type");
 
@@ -96,6 +104,10 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
         imageStopInvitation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (mediaPlayer != null){
+                    mediaPlayer.release();
+                }
                 if (getIntent().getBooleanExtra("isMultiple", false)) {
                     Type type = new TypeToken<ArrayList<User>>(){}.getType();
                     ArrayList<User> receivers = new Gson().fromJson(getIntent().getStringExtra("selectedUsers"), type);
@@ -141,6 +153,9 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
     }//onCreate ends
 
     public void cancelInvitation( String receiverToken, ArrayList<User> receivers){
+        if (mediaPlayer != null){
+            mediaPlayer.release();
+        }
         try {
 
             JSONArray tokens = new JSONArray();
@@ -297,6 +312,9 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        if (mediaPlayer != null){
+            mediaPlayer.release();
+        }
         LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(
                 invitationResponseReceiver
         );

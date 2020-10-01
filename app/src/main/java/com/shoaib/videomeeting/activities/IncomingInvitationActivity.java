@@ -7,6 +7,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +40,7 @@ public class IncomingInvitationActivity extends AppCompatActivity {
     private ImageView imageMeetingType, imageAcceptInvitation, imageRejectInvitation;
     private TextView textFirstChar, textInitiatorUsername, textEmail;
     private String meetingType = null;
+    private MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,16 @@ public class IncomingInvitationActivity extends AppCompatActivity {
         textEmail = findViewById(R.id.textInitiatorEmail);
 
         meetingType = getIntent().getStringExtra(Constants.REMOTE_MSG_MEETING_TYPE);
+
+        Uri ringtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), ringtone);
+        mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mediaPlayer.release();
+            }
+        });
 
         if (meetingType != null){
             if (meetingType.equals("video")){
@@ -65,11 +79,17 @@ public class IncomingInvitationActivity extends AppCompatActivity {
         textEmail.setText(getIntent().getStringExtra(Constants.KEY_EMAIL));
 
 
-        imageAcceptInvitation.setOnClickListener(v -> sendInvitationResponse(Constants.REMOTE_MSG_INVITATION_ACCEPTED, getIntent().getStringExtra(Constants.REMOTE_MSG_INVITER_TOKEN)));
+        imageAcceptInvitation.setOnClickListener((View v) -> {
+            mediaPlayer.release();
+                    sendInvitationResponse(Constants.REMOTE_MSG_INVITATION_ACCEPTED, getIntent().getStringExtra(Constants.REMOTE_MSG_INVITER_TOKEN));
+                }
+                );
 
         imageRejectInvitation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer.release();
+
                 sendInvitationResponse(Constants.REMOTE_MSG_INVITATION_REJECTED , getIntent().getStringExtra(Constants.REMOTE_MSG_INVITER_TOKEN));
             }
         });
@@ -127,6 +147,7 @@ public class IncomingInvitationActivity extends AppCompatActivity {
                                 }
                             }
                             else if (type.equals(Constants.REMOTE_MSG_INVITATION_REJECTED)){
+
                                 Toast.makeText(IncomingInvitationActivity.this, "Invitation Rejected", Toast.LENGTH_SHORT).show();
                                 finish();
 
@@ -154,10 +175,13 @@ public class IncomingInvitationActivity extends AppCompatActivity {
 
             if (type != null){
                 if (type.equals(Constants.REMOTE_MSG_INVITATION_CANCELLED)){
-                    Toast.makeText(context, "Invitation Cancelled", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
 
+
+                    // whenever caller stop invitation this revoked and activity is recreated.
+                        mediaPlayer.release();
+                        Toast.makeText(context, "Invitation Cancelled", Toast.LENGTH_SHORT).show();
+                        finish();
+                }
             }
 
         }
@@ -174,9 +198,20 @@ public class IncomingInvitationActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        if (mediaPlayer != null){
+            mediaPlayer.release();
+
+        }
+
         LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(
                 invitationResponseReceiver
         );
     }
 
+
+    @Override
+    protected void onDestroy() {
+        mediaPlayer.stop();
+        super.onDestroy();
+    }
 }
